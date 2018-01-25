@@ -64,7 +64,7 @@ module.exports.dnsupdate = (event, context, callback) => {
           {
             Action: "UPSERT",
             ResourceRecordSet: {
-              Name: domain,
+              Name: domain + ".dyn.p.iraten.ch.",
               ResourceRecords: [
                 {
                   Value: ip
