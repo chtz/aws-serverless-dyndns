@@ -48,13 +48,18 @@ module.exports.dnsupdate = (event, context, callback) => {
   const ip = query_params.i;
   const user = query_params.l;
   const pass = query_params.p;
-  const domain = query_params.h;
+
+  const domain = '.dyn.p.iraten.ch.'; 
+  var host = query_params.h;
+  if (host.endsWith(domain)) {
+    host = host.substr(0, host.length - domain.length)
+  }
 
   console.log(JSON.stringify({
     ip: ip,
     user: user,
     pass: pass,
-    domain: domain,
+    host: host,
   }));
 
   if (user == process.env.apiUser && pass == process.env.apiPassword) {
@@ -64,7 +69,7 @@ module.exports.dnsupdate = (event, context, callback) => {
           {
             Action: "UPSERT",
             ResourceRecordSet: {
-              Name: domain + ".dyn.p.iraten.ch.",
+              Name: host + domain,
               ResourceRecords: [
                 {
                   Value: ip
