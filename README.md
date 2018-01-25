@@ -43,3 +43,11 @@ $ nslookup foo.apiUser1.dyn.p.iraten.ch.
 ...
 Address: 127.0.0.2
 ```
+
+6) fritz.box configuration (dyndns update URL)
+
+```
+https://3m5hefjm72.execute-api.us-east-1.amazonaws.com/dev/dnsupdate?i=<ipaddr>&l=<username>&p=<pass>&h=<domain>
+```
+
+Done ;-)
