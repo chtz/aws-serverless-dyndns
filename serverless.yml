@@ -4,8 +4,8 @@ provider:
   name: aws
   runtime: nodejs6.10
   memorySize: 128
-#  stage: dev
-#  region: us-east-1
+  stage: dev
+  region: us-east-1
   iamRoleStatements:
     - Effect: "Allow"
       Action:
@@ -21,3 +21,5 @@ functions:
           method: get
     environment:
       apiSecret: ${file(config.${self:provider.stage}.yml):apiSecret}
+      hostedZoneId: ${file(config.${self:provider.stage}.yml):hostedZoneId}
+      domain: ${file(config.${self:provider.stage}.yml):domain}

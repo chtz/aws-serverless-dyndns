@@ -10,7 +10,7 @@ module.exports.dnsupdate = (event, context, callback) => {
   const user = query_params.l;
   const pass = query_params.p;
 
-  var domain = '.dyn.p.iraten.ch.'; 
+  var domain = process.env.domain; 
   if (user != 'root') {
     domain = "." + user + domain;
   }
@@ -51,7 +51,7 @@ module.exports.dnsupdate = (event, context, callback) => {
         ],
         Comment: "Updated via dyndns"
       },
-      HostedZoneId: "Z1910YI2GB0C92"
+      HostedZoneId: process.env.hostedZoneId
     };
     route53.changeResourceRecordSets(params, function (err, data) {
       if (err) {
