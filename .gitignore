@@ -1,0 +1,10 @@
+# package directories
+node_modules
+jspm_packages
+
+# Serverless directories
+.serverless
+
+# Files containing credentials
+sample_curl_with_pw.sh
+config.dev.yml
