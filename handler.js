@@ -1,47 +1,8 @@
 'use strict';
 
+var hash = require('hash.js')
 var AWS = require('aws-sdk');
 var route53 = new AWS.Route53();
-
-/* module.exports.hello = (event, context, callback) => {
-  const request_body = JSON.parse(event.body);
-
-  var params = {
-    ChangeBatch: {
-      Changes: [
-        {
-          Action: "UPSERT",
-          ResourceRecordSet: {
-            Name: "home.iraten.ch.",
-            ResourceRecords: [
-              {
-                Value: request_body.ip
-              }
-            ],
-            TTL: 60,
-            Type: "A"
-          }
-        }
-      ],
-      Comment: "Updated vis dyndns"
-    },
-    HostedZoneId: "Z1910YI2GB0C92"
-  };
-  route53.changeResourceRecordSets(params, function (err, data) {
-    if (err) {
-      callback(null, {
-        statusCode: 500,
-        body: JSON.stringify(err),
-      });
-    }
-    else {
-      callback(null, {
-        statusCode: 200,
-        body: JSON.stringify(data),
-      });
-    }
-  });
-}; */
 
 module.exports.dnsupdate = (event, context, callback) => {
   const query_params = event.queryStringParameters;
@@ -49,20 +10,28 @@ module.exports.dnsupdate = (event, context, callback) => {
   const user = query_params.l;
   const pass = query_params.p;
 
-  const domain = '.dyn.p.iraten.ch.'; 
+  var domain = '.dyn.p.iraten.ch.'; 
+  if (user != 'root') {
+    domain = "." + user + domain;
+  }
+
   var host = query_params.h;
   if (host.endsWith(domain)) {
     host = host.substr(0, host.length - domain.length)
   }
+
+  var expected_password = hash.sha256().update(process.env.apiSecret + user).digest('hex')
 
   console.log(JSON.stringify({
     ip: ip,
     user: user,
     pass: pass,
     host: host,
+    domain: domain,
+    expected_password: expected_password
   }));
 
-  if (user == process.env.apiUser && pass == process.env.apiPassword) {
+  if (pass == expected_password) {
     var params = {
       ChangeBatch: {
         Changes: [
@@ -108,4 +77,3 @@ module.exports.dnsupdate = (event, context, callback) => {
     });
   }
 };
-
