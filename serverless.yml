@@ -10,7 +10,7 @@ provider:
     - Effect: "Allow"
       Action:
         - "route53:ChangeResourceRecordSets"
-      Resource: "arn:aws:route53:::hostedzone/Z1910YI2GB0C92"
+      Resource: "arn:aws:route53:::hostedzone/${file(config.${self:provider.stage}.yml):hostedZoneId}"
 
 functions:
   dnsupdate:
