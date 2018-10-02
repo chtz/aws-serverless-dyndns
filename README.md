@@ -3,6 +3,10 @@ fritz.box-ready dyndns endpoint for Route53 (experimental)
 
 # how to
 
+0) install serverless.com tools
+
+see https://serverless.com/framework/docs/getting-started/
+
 1) configuration
 
 ```
